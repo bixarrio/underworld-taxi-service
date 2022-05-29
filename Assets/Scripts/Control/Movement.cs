@@ -10,7 +10,6 @@ namespace UTS.Control
 
         [SerializeField] float _moveSpeed = 10f;
         [SerializeField] float _rotationalSpeed = 10f;
-        [SerializeField] KeyCode _pickupKey = KeyCode.E;
 
         private Rigidbody _rb;
         private TaxiService _taxi;
@@ -27,8 +26,6 @@ namespace UTS.Control
 
         private void FixedUpdate()
         {
-            if (ProcessPickup()) return;
-            if (ProcessDropOff()) return;
             if (ProcessMovement()) return;
         }
 
@@ -42,33 +39,6 @@ namespace UTS.Control
         #endregion
 
         #region Private Methods
-
-        private bool ProcessPickup()
-        {
-            if (!_taxi.CanTakeFare()) return false;
-
-            // find all the fares
-            var fares = FindObjectsOfType<FareTrigger>();
-            foreach (var fare in fares)
-            {
-                if (!fare.WithinRange(transform.position)) continue;
-                if (Input.GetKeyDown(_pickupKey))
-                {
-                    TogglePhysics(false);
-                    _taxi.Pickup(fare.GetComponent<Fare>());
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool ProcessDropOff()
-        {
-            if (!_taxi.CanDropOff()) return false;
-
-            _taxi.DropOff();
-            return true;
-        }
 
         private bool ProcessMovement()
         {
