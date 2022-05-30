@@ -32,9 +32,12 @@ namespace UTS.Control
         private void DumpContents()
         {
             _driver.GetComponent<Dump>().DumpMe();
-            GetComponent<TaxiService>().DumpMe();
-            var passenger = _passengerSeat.GetChild(0);
-            passenger.GetComponent<Dump>().DumpMe();
+            Transform passenger = default;
+            if (_passengerSeat.childCount > 0)
+            {
+                passenger = _passengerSeat.GetChild(0);
+                passenger.GetComponent<Dump>().DumpMe();
+            }
             StartCoroutine(ResetRoutine(transform.position, passenger));
             _dumped = true;
         }
@@ -53,8 +56,10 @@ namespace UTS.Control
             transform.GetComponent<Rigidbody>().isKinematic = false;
             yield return null;
 
-            dumpedPassenger.GetComponent<Fare>().ResetMe();
-            dumpedPassenger.GetComponent<Dump>().UndumpMe(null);
+            if (dumpedPassenger != null)
+            {
+                dumpedPassenger.GetComponent<Dump>().UndumpMe(_passengerSeat);
+            }
 
             _dumped = false;
         }

@@ -31,6 +31,13 @@ namespace UTS.Mechanics
             rb.AddForce(transform.forward * _strength);
         }
 
+        private void OnDrawGizmos()
+        {
+            var direction = transform.forward;
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.position + direction * GetComponent<Collider>().bounds.size.z);
+        }
+
         #endregion
     }
 }

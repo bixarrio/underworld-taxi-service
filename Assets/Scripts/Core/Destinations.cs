@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UTS.Core
 {
-    public class Destinations : MonoBehaviour
+    public class Destinations : Spawner
     {
         #region Properties and Fields
 
@@ -14,7 +14,10 @@ namespace UTS.Core
         #region Unity Methods
 
         private void Start()
-            => LoadDestinations();
+        {
+            SpawnObjects();
+            LoadDestinations();
+        }
 
         #endregion
 

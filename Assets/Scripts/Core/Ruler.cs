@@ -1,11 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ruler : MonoBehaviour
 {
     #region Properties and Fields
 
-    [SerializeField] Transform _worldPointA;
-    [SerializeField] Transform _worldPointB;
+    [SerializeField] List<Transform> _worldPoints;
 
     #endregion
 
@@ -14,7 +14,8 @@ public class Ruler : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(_worldPointA.position, _worldPointB.position);
+        for (var i = 1; i < _worldPoints.Count; i++)
+            Gizmos.DrawLine(_worldPoints[i - 1].position, _worldPoints[i].position);
     }
 
     #endregion
@@ -25,7 +26,12 @@ public class Ruler : MonoBehaviour
         => FindObjectOfType<Ruler>();
 
     public float WorldDistance()
-        => Vector3.Distance(_worldPointA.position, _worldPointB.position);
+    {
+        var dist = 0f;
+        for (var i = 1; i < _worldPoints.Count; i++)
+            dist += Vector3.Distance(_worldPoints[i - 1].position, _worldPoints[i].position);
+        return dist;
+    }
 
     #endregion
 }

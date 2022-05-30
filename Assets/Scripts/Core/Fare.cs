@@ -64,12 +64,6 @@ namespace UTS.Core
                     fare.SetIdleState();
         }
 
-        public void ResetMe()
-        {
-            foreach (var fare in FindObjectsOfType<Fare>())
-                fare.PopState();
-        }
-
         public void DropOff()
         {
             _state.Pop();
@@ -139,6 +133,8 @@ namespace UTS.Core
             var color = _distanceGradient.Evaluate(Mathf.InverseLerp(0, Ruler.Get().WorldDistance(), dist));
             color.a = _alpha;
             _materialInst.color = color;
+            var emissionColor = new Color(color.r * 3f, color.g * 3f, color.b * 3f, 1f);
+            _materialInst.SetColor("_EmissionColor", emissionColor);
         }
 
         private void DrawDetectionRing()
